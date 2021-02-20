@@ -1,3 +1,9 @@
+### Installation
+Tested on python version 3.7
+To install all required packages type in the command line:
+```
+pip install -r requirements.txt
+```
 ### Quick reference
 The viewer is a set of two scripts: renderer.py and response_grabber.py  
 ***response_grabber.py*** - gets localization results from folder with query images  
@@ -16,7 +22,7 @@ optional arguments:
 
 ```
 ***renderer.py*** - render localization results in points cloud
-```buildoutcfg
+```text
 usage: renderer.py [-h] [--reference_images REFERENCE_IMAGES] directory
 
 Draw points cloud with cameras and placeholder

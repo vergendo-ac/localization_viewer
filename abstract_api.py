@@ -1,7 +1,6 @@
 import json
 import logging
 from json import JSONDecodeError
-from pathlib import Path
 
 import requests
 
