@@ -191,6 +191,8 @@ if __name__ == '__main__':
     # Load cloud and set scale
     cloud = io.read_point_cloud(directory+'/'+str(PurePath(directory).name)+'.ply')
     cloud.scale(scale, [0, 0, 0])
+    cloud = cloud.voxel_down_sample(voxel_size=0.02)
+    cloud, _ = cloud.remove_radius_outlier(nb_points=16, radius=0.5)
 
     # Create visualization object with callback and add objects to render
     vis = visualization.VisualizerWithKeyCallback()
