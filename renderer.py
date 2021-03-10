@@ -25,7 +25,7 @@ def draw_line(path_for_points, color):
     :return:
     """
 
-    lines = [[i, i + 1] for i in range(len(path_for_points))]
+    lines = [[i, i + 1] for i in range(len(path_for_points)-1)]
     colors = [color for i in range(len(lines))]
     line_set = geometry.LineSet(
         points=utility.Vector3dVector(path_for_points),
