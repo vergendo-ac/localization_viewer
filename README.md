@@ -8,22 +8,24 @@ pip install -r requirements.txt
 The viewer is a set of two scripts: renderer.py and response_grabber.py  
 ***response_grabber.py*** - gets localization results from folder with query images  
 ```buildoutcfg
-usage: renderer.py [-h] [--reference_images REFERENCE_IMAGES] directory
+usage: response_grabber.py [-h] [--reference_images REFERENCE_IMAGES] [--hint HINT] [--use_oscp] directory
 
-Draw points cloud with cameras and placeholder
+Grab images from selected directory and localize them
 
 positional arguments:
-  directory             Directory with points cloud and localization responses
+  directory             Directory with images
 
 optional arguments:
   -h, --help            show this help message and exit
   --reference_images REFERENCE_IMAGES
                         Directory with reference images
+  --hint HINT           Series id to localized in
+  --use_oscp            Use oscp api to localize
 
 ```
 ***renderer.py*** - render localization results in points cloud
 ```text
-usage: renderer.py [-h] [--reference_images REFERENCE_IMAGES] directory
+usage: renderer.py [-h] [--cs {local,enu,ecef}] [--no_filter] [--hide_objects] [--hide_cameras] [--hide_cloud] [--hide_frame] directory
 
 Draw points cloud with cameras and placeholder
 
@@ -32,8 +34,13 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  --reference_images REFERENCE_IMAGES
-                        Directory with reference images
+  --cs {local,enu,ecef}
+                        Show the result in a specified coordinate system
+  --no_filter           Do not filter cloud
+  --hide_objects        Hide objects
+  --hide_cameras        Hide cameras
+  --hide_cloud          Hide cloud
+  --hide_frame          Hide cloud frame
 
 ```
 ### Step by step guide (The basic case)

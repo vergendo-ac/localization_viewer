@@ -1,5 +1,5 @@
 import abstract_api
-from config import PORT
+from config import HOST
 
 
 class LocalizeRequest(abstract_api.BaseRequest):
@@ -17,7 +17,7 @@ class LocalizeRequest(abstract_api.BaseRequest):
         self.cookies = cookies
 
         if url is None:
-            self.url = f"http://185.162.94.228:{PORT}/api/localizer/localize"
+            self.url = f"{HOST}/api/localizer/localize"
         else:
             self.url = url
 
@@ -39,7 +39,7 @@ class GetReconstructionsJsonRequest(abstract_api.BaseRequest):
         self.cookies = cookies
 
         if url is None:
-            self.url = f"http://185.162.94.228:{PORT}/rpc/get_reconstructions_json"
+            self.url = f"{HOST}/rpc/get_reconstructions_json"
         else:
             self.url = url
 
@@ -61,9 +61,29 @@ class GetReconstructionPly(abstract_api.BaseRequest):
         self.cookies = cookies
 
         if url is None:
-            self.url = f"http://185.162.94.228:{PORT}/rpc/get_reconstruction_ply"
+            self.url = f"{HOST}/rpc/get_reconstruction_ply"
         else:
             self.url = url
 
     def execute(self):
         return self._execute_binary()
+
+
+class LocalizeByGeopose(abstract_api.BaseRequest):
+    """
+    """
+    def __init__(self, method, url=None, params=None, data=None, headers=None, files=None, cookies=None):
+        self.method = method
+        self.params = params
+        self.headers = headers
+        self.data = data
+        self.files = files
+        self.cookies = cookies
+
+        if url is None:
+            self.url = f"{HOST}/scrs/geopose_objs_local"
+        else:
+            self.url = url
+
+    def execute(self):
+        return self._execute()
