@@ -1,5 +1,8 @@
 # Settings for renderer
-PORT = 25000
+PROD_SERVER = "https://developer.augmented.city"
+DEV_SERVER = "https://developer.testing.augmented.city"
+
+HOST = PROD_SERVER
 
 RESPONSES = 'responses'
 
