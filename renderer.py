@@ -114,9 +114,9 @@ def get_camera_ecef(scene_json):
 def get_camera_geodetic(scene_json):
     with open(scene_json) as f:
         scene = json.load(f)
-    return [scene["geopose"]["pose"]['latitude'],
-            scene["geopose"]["pose"]['longitude'],
-            scene["geopose"]["pose"]['ellipsoidHeight']]
+    return [scene["geopose"]["pose"]['position']['lat'],
+            scene["geopose"]["pose"]['position']['lon'],
+            scene["geopose"]["pose"]['position']['h']]
 
 
 def get_camera_object(scene_json, color, cs, zero=None):
@@ -147,10 +147,10 @@ def get_camera_object(scene_json, color, cs, zero=None):
         camera_orientation = [scene["geopose"]["ecefPose"]["orientation"]["w"], scene["geopose"]["ecefPose"]["orientation"]["x"],
                               scene["geopose"]["ecefPose"]["orientation"]["y"], scene["geopose"]["ecefPose"]["orientation"]["z"]]
     elif cs == 'enu':
-        geodetic_position = [scene['geopose']['pose']['latitude'], scene['geopose']['pose']['longitude'], scene['geopose']['pose']['ellipsoidHeight']]
+        geodetic_position = [scene['geopose']['geopose']['position']['lat'], scene['geopose']['geopose']['position']['lon'], scene['geopose']['geopose']['position']['h']]
         camera_position = geodetic_to_enu(geodetic_position[0], geodetic_position[1], geodetic_position[2], zero[0], zero[1], zero[2])
-        camera_orientation = [scene["geopose"]['pose']["quaternion"]["w"], scene["geopose"]['pose']["quaternion"]["x"],
-                              scene["geopose"]['pose']["quaternion"]["y"], scene["geopose"]['pose']["quaternion"]["z"]] 
+        camera_orientation = [scene["geopose"]['geopose']["quaternion"]["w"], scene["geopose"]['geopose']["quaternion"]["x"],
+                              scene["geopose"]['geopose']["quaternion"]["y"], scene["geopose"]['geopose']["quaternion"]["z"]] 
 
      
     camera = geometry.TriangleMesh.create_sphere(radius=0.5)
@@ -237,7 +237,7 @@ def scene_object(scene_json, cs, zero=None):
                 orientation = [placeholder['content']["ecefPose"]["orientation"]["w"], placeholder['content']["ecefPose"]["orientation"]["x"],
                                placeholder['content']["ecefPose"]["orientation"]["y"], placeholder['content']["ecefPose"]["orientation"]["z"]]
             elif cs == 'enu':
-                geodetic_position = [placeholder['content']['geopose']['latitude'], placeholder['content']['geopose']['longitude'], placeholder['content']['geopose']['ellipsoidHeight']]
+                geodetic_position = [placeholder['content']['geopose']['position']['lat'], placeholder['content']['geopose']['position']['lon'], placeholder['content']['geopose']['position']['h']]
                 position = geodetic_to_enu(geodetic_position[0], geodetic_position[1], geodetic_position[2], zero[0], zero[1], zero[2])
                 orientation = [placeholder['content']["geopose"]["quaternion"]["w"], placeholder['content']["geopose"]["quaternion"]["x"],
                                placeholder['content']["geopose"]["quaternion"]["y"], placeholder['content']["geopose"]["quaternion"]["z"]]
@@ -316,9 +316,9 @@ def get_scale_ecef_gps_geopose_azimuth_gravity(rec_id):
               'p_need_images': False,
               'p_need_polygon': False}
     response = GetReconstructionsJsonRequest(method='get', params=params).execute()
-    origin_geopose_position = [response.json()[0]["reconstruction"]['ecef']['human_readable_info']['origin_geopose']["latitude"],
-        response.json()[0]["reconstruction"]['ecef']['human_readable_info']['origin_geopose']["longitude"],
-        response.json()[0]["reconstruction"]['ecef']['human_readable_info']['origin_geopose']["ellipsoidHeight"]]
+    origin_geopose_position = [response.json()[0]["reconstruction"]['ecef']['human_readable_info']['origin_geopose']["position"]["lat"],
+        response.json()[0]["reconstruction"]['ecef']['human_readable_info']['origin_geopose']['position']["lon"],
+        response.json()[0]["reconstruction"]['ecef']['human_readable_info']['origin_geopose']['position']["h"]]
     origin_geopose_orientation = [
         response.json()[0]['reconstruction']['ecef']['human_readable_info']['origin_geopose']['quaternion']['w'],
         response.json()[0]['reconstruction']['ecef']['human_readable_info']['origin_geopose']['quaternion']['x'],
@@ -366,7 +366,7 @@ if __name__ == '__main__':
     dataset = read_dataset_simple(directory)
 
     # Create visualization object with callback and add objects to render
-    vis = visualization.VisualizerWithKeyCallback()
+    vis = visualization.Visualizer()
     vis.create_window(width=WINDOW_WIDTH, height=WINDOW_HEIGHT)
     vis.get_render_option().point_size = 1
     vis.get_render_option().background_color = [0, 0, 0]
