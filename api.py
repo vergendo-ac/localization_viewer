@@ -52,7 +52,7 @@ class GetReconstructionPly(abstract_api.BaseRequest):
     Get ply
     """
 
-    def __init__(self, method, url=None, params=None, data=None, headers=None, files=None, cookies=None):
+    def __init__(self, method, path=None, url=None, params=None, data=None, headers=None, files=None, cookies=None):
         self.method = method
         self.params = params
         self.headers = headers
@@ -60,8 +60,8 @@ class GetReconstructionPly(abstract_api.BaseRequest):
         self.files = files
         self.cookies = cookies
 
-        if url is None:
-            self.url = f"{HOST}/rpc/get_reconstruction_ply"
+        if url is None and path is not None:
+            self.url = f"{HOST}/media/{path}"
         else:
             self.url = url
 

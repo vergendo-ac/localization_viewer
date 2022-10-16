@@ -12,7 +12,7 @@ import piexif
 from config import LOG_FORMAT, DIR_RESULT
 from helper import dir_path, load_json, get_exif, get_hint_from_cmd
 
-from api import LocalizeRequest, GetReconstructionPly, LocalizeByGeopose
+from api import LocalizeRequest, GetReconstructionPly, LocalizeByGeopose, GetReconstructionsJsonRequest
 
 
 def read_dataset_simple(dataset_path):
@@ -31,9 +31,17 @@ def get_ply(reconstruction_id):
     :param reconstruction_id:
     :return:
     """
-    headers_ply = {'Accept': 'model/ply'}
-    params = {'p_reconstruction_id': reconstruction_id}
-    return GetReconstructionPly(method='get', headers=headers_ply, params=params).execute()
+    params = {'p_reconstruction_ids': "{" + str(reconstruction_id) + "}",
+              'p_need_images': False,
+              'p_need_polygon': False}
+    response = GetReconstructionsJsonRequest(method='get', params=params).execute()
+
+    sparse_cloud_path = response.json()[0]["reconstruction"]["sparse_cloud_path"] if len(response.json()) else ""
+
+    if sparse_cloud_path == "":
+        return None
+
+    return GetReconstructionPly(method='get', path=sparse_cloud_path).execute()
 
 
 def localize_as(request_data):
